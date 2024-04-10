@@ -1,0 +1,5 @@
+# ninja log v5
+15	7977	7335182232234736	CMakeFiles/WeatherApp.dir/Tools.cpp.obj	89e86124c909bb7
+31	10376	7335182256224386	CMakeFiles/WeatherApp.dir/main.cpp.obj	89b9ba5ccbc42f10
+25	11334	7335182265852119	CMakeFiles/WeatherApp.dir/WeatherApp.cpp.obj	63d50c6b8df60ee8
+11334	12736	7335182273198104	WeatherApp.exe	36f8342b6ba05ca5
