@@ -10,10 +10,10 @@ WeatherApp::WeatherApp(std::string cli, const std::string& API, const std::strin
 }
 
 
-json WeatherApp::getWeatherForFiveDays() {
-	this->request = "/data/2.5/forecast?";
-	this->request += "q=" + this->cityName;
-	this->request += "&appid=" + this->API;
+json WeatherApp::getJson(std::string request) {
+
+    request += "q=" + this->cityName;
+    request += "&appid=" + this->API;
 
 	if (auto res = this->cli->Get(request)) {
 
@@ -26,19 +26,4 @@ json WeatherApp::getWeatherForFiveDays() {
 	}
 }
 
-
-json WeatherApp::getCurrentWeather() {
-        this->request = "/data/2.5/weather?";
-        this->request += "q=" + this->cityName;
-        this->request += "&appid=" + this->API;
-
-        if (auto res = this->cli->Get(request)) {
-                json data = json::parse(res->body);
-                return data;
-        }
-        else {
-            std::cout << "Query does not complited";
-            return 0;
-        }
-    }
 

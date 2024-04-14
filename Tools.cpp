@@ -8,38 +8,38 @@ std::string Tools::showFiveDaysForecast(const json& data) {
     try {
         if (data["cod"] == "200" ) {
         std::string res;
-        int index = 0, counter, index_2; float sum; std:: string date, date2;
-            while (index < data["list"].size()) {
-                date = data["list"][index]["dt_txt"];
-                date.erase(10);
-                index_2 = index + 1;
-                date2 = data["list"][index_2]["dt_txt"];
-                date2.erase(10);
-                counter = 1; sum = data["list"][index]["main"]["temp"];
-                while (date2 == date) {
-                    counter += 1;
-                    sum += data["list"][index_2]["main"]["temp"].get<double>();
-                    index_2 += 1;
-                    if (index_2 >= data["list"].size()) { break; }
-                    date2 = data["list"][index_2]["dt_txt"];
-                    date2.erase(10);
+            int* index = new int (0); int* counter = new int(); int* index_2 = new int(); int* res1 = new int();
+            float* sum = new float(); std:: string* date = new std::string(); std:: string* date2 = new std::string();
+            while (*index < data["list"].size()) {
+                *date = data["list"][*index]["dt_txt"];
+                date->erase(10);
+                *index_2 = *index + 1;
+                *date2 = data["list"][*index_2]["dt_txt"];
+                date2->erase(10);
+                *counter = 1; *sum = data["list"][*index]["main"]["temp"];
+                while (*date2 == *date) {
+                    *counter += 1;
+                    *sum += data["list"][*index_2]["main"]["temp"].get<double>();
+                    *index_2 += 1;
+                    if (*index_2 >= data["list"].size()) { break; }
+                    *date2 = data["list"][*index_2]["dt_txt"];
+                    date2->erase(10);
                 }
-                res += date + " Temp: ";
+                res += *date + " Temp: ";
 
-                if (sum / counter - 273.15 > 0) {
+                if (*sum / *counter - 273.15 > 0) {
                     res += "+";
                 }
-                int res1 = std::round(sum / counter - 273.15);
+                *res1 = std::round(*sum / *counter - 273.15);
 
-                std::string res_str = std::to_string(res1);
-
-                res += res_str + " C\n";
-                index = index_2;
-                }
+                res += std::to_string(*res1) + " C\n";
+                *index = *index_2;
+            }
+            delete index, delete counter, delete index_2, delete res1, delete sum, delete date, delete date2;
             return res;
         }
 
-        else {throw 1;}
+        else {throw 400;}
     }
     catch (int g) {
         return "HttpError: " + to_string(data["cod"]);
@@ -51,36 +51,37 @@ std::string Tools::showFiveDaysForecast(const json& data) {
 std::string Tools::showOneDayWeather(const json& data, const std::string& ndate) {
     try {
         if (data["cod"] == "200") {
-        std::cout << std::endl;
-        int counter = 0; float sum = 0; std::string date;
-        for (int index = 0; index < data["list"].size(); index++) {
-            date = data["list"][index]["dt_txt"];
-            date.erase(10);
-            if (ndate == date) {
-                counter += 1;
-                 sum += data["list"][index]["main"]["temp"].get<double>();  // указываем, какой тип данных получаем
+            std::cout << std::endl;
+            int* counter = new int (0); int* index = new int (); int* res1 = new int ();
+            float* sum = new float (0); std::string* date = new std::string();
+            for (*index = 0; *index < data["list"].size(); *index+=1) {
+                *date = data["list"][*index]["dt_txt"];
+                date->erase(10);
+                if (ndate == *date) {
+                    *counter += 1;
+                    *sum += data["list"][*index]["main"]["temp"].get<double>();
+                }
             }
-        }
-        std::string res;
-        res += " Temp: ";
+            std::string res;
+            res += " Temp: ";
 
-        if (counter != 0) {
-            if (sum / counter - 273.15 > 0) {
-                res +=  "+";
+            if (*counter != 0) {
+                if (*sum / *counter - 273.15 > 0) {
+                    res +=  "+";
+                }
+
+                *res1 = std::round(*sum / *counter - 273.15);
+
+                res += std::to_string(*res1) + " C\n";
             }
-
-            int res1 = std::round(sum / counter - 273.15);
-            std::string res_str = std::to_string(res1);
-
-            res += res_str + " C\n";
-        }
-        else {
-            res = "Incorrect date!";
-        }
-        return res;
+            else {
+                res = "Incorrect date!";
+            }
+            delete counter, delete index, delete res1, delete sum, delete date;
+            return res;
         }
 
-        else {throw 1;}
+        else {throw 400;}
     }
     catch (int g) {
         return "HttpError: " + to_string(data["cod"]);
@@ -90,36 +91,34 @@ std::string Tools::showOneDayWeather(const json& data, const std::string& ndate)
 
 
 std::string Tools::showCurrentWeather(const json& data) {
-    std::string res, weather;
-    res += "Current weather: ";
     try {
         if ( data["cod"] == 200) {
-            auto resd = data["main"]["temp"].get<double>();
-            weather = data["weather"][0]["main"].get<std::string>();
-            weather += "\nTemp: ";
+            std::string res; int* res1 = new int ();
+            res += "Current weather: ";
+            res += data["weather"][0]["main"].get<std::string>();
+            res += "\nTemp: ";
 
-            if (resd - 273.15 > 0) {
+            if ( data["main"]["temp"].get<double>() - 273.15 > 0) {
                 res += "+";
             }
 
-            int res1 = std::round(resd - 273.15);
+            *res1 = std::round( data["main"]["temp"].get<double>() - 273.15);
 
-            std::string res_str = std::to_string(res1);
-
-            res += res_str + " C\nFeels like: ";
+            res += std::to_string(*res1) + " C\nFeels like: ";
 
             if (data["main"]["feels_like"].get<double>() - 273.15 > 0) {
                 res += "+";
             }
 
-            res1 = std::round(data["main"]["feels_like"].get<double>() - 273.15);
-            res_str = std::to_string(res1);
+            *res1 = std::round(data["main"]["feels_like"].get<double>() - 273.15);
 
-            res += res_str + " C";
+            res += std::to_string(*res1) + " C";
+
+            delete res1;
             return res;
         }
 
-        else {throw 1;}
+        else {throw 400;}
     }
     catch (int g) {
         return "HttpError: " + to_string(data["cod"]);
