@@ -11,8 +11,8 @@ using namespace Tools;
 const std::string API = "e566abb4bf71c63f4750ec1a847e21c8";
 
 QString Qcity, Qdate, Qresult;
-std::string* result = new std::string("null"); std::string* city = new std::string ("null");
-std::string* date = new std::string("null");
+std::string* result = new std::string(); std::string* city = new std::string ("null");
+std::string* date = new std::string();
 WeatherApp* app = new WeatherApp("api.openweathermap.org", API, *city);
 
 MainWindow::MainWindow(QWidget *parent):
