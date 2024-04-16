@@ -9,6 +9,7 @@ class WeatherApp {
 	std::string API;
 	httplib::Client *cli;
     std::string cityName;
+    std::string request;
 
 public:
 

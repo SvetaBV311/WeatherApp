@@ -12,10 +12,11 @@ WeatherApp::WeatherApp(std::string cli, const std::string& API, const std::strin
 
 json WeatherApp::getJson(std::string request) {
 
-    request += "q=" + this->cityName;
-    request += "&appid=" + this->API;
+    this->request = request;
+    this->request += "q=" + this->cityName;
+    this->request += "&appid=" + this->API;
 
-	if (auto res = this->cli->Get(request)) {
+    if (auto res = this->cli->Get(this->request)) {
 
             json data = json::parse(res->body);
 			return data;
